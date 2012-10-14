@@ -27,7 +27,7 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 	/** The number of elements in the backing set. */
 	private int n;
 
-	/** Array of indexes representing the current size-k combination. */
+	/** Array of indices representing the current size-k combination. */
 	private int[] combination;
 
 	/** Tracks the index being currently examined in the combination array. */
@@ -40,6 +40,7 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 	 *  tight loops that might arise from rapidly calling the next() method. */
 	private int i;
 
+	
 	/**
 	 * Construct a new iterator for a SizeKSubset
 	 * 
@@ -60,18 +61,14 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 		for (i = 0; i < k; i++) { combination[i] = i; }
 		combination[k-1]--;
 	}
-
-	/** {@inheritDoc} */
-	@Override
-	public boolean hasNext() {
-		return hasNextCombination;
-	}
+	
 
 	/** {@inheritDoc} */
 	@Override
 	public Set<E> next() {
 		
-		curIndex = k - 1; // Current item index being evaluated for advancement
+		// Start with the last index
+		curIndex = k - 1;
 		
 		// If the last index is less than n-1, increment it.
 		if (combination[k-1] < n-1) {
@@ -93,7 +90,8 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 			/*
 			 * Generate an increasing range at the current index starting with
 			 * the value of the current index + 1 and increasing until the end
-			 * of the index array is reached.
+			 * of the index array is reached. This produces indices representing
+			 * the next non-duplicate set.
 			 */
 			for (i = combination[curIndex] + 1; curIndex < k; i++) {
 				combination[curIndex++] = i;
@@ -111,12 +109,18 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 		
 		return subset;
 	}
+	
+	
+	/** {@inheritDoc} */
+	@Override
+	public boolean hasNext() {
+		return hasNextCombination;
+	}
+	
 
 	/** {@inheritDoc} */
 	@Override
 	public void remove() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException();
 	}
-
 }

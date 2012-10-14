@@ -46,15 +46,6 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 		return new SizeKSubsetIterator<E>(this);
 	}
 
-	
-	/** Return the cardinality of the set of subsets of size k. */
-	@Override
-	public int size() {
-		// TODO: return the correct size.
-		return 0;
-	}
-
-	
 	/** Returns the backing set of this object. */
 	public E[] getBackingSet() {
 		return backingSet;
@@ -67,22 +58,59 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 	}
 	
 	
+	/*
+	 * This method calculates the total possible amounts of subsets that
+	 * can be produced. This method is basically n choose k, using properties
+	 * of binomial coefficients to make the math a little nicer.
+	 * 
+	 * The equation for binomial coefficient calculation can be written:
+	 * 
+	 *                   n!        n   n - 1   n - 2         n - (k - 1)
+ 	 * n choose k == ---------- == - * ----- * ----- * ... * -----------
+ 	 *               k!(n - k)!    k   k - 1   k - 2         k - (k - 1)
+ 	 *               
+ 	 * where in the last term, k - (k - 1) == 1, and simplifies to n - (k - 1).
+ 	 * In the next term, k - (k - 2) == 2, k - (k - 3) == 3, and so forth.
+ 	 * 
+ 	 * Each term in the equation is itself a coefficient, and so they each
+ 	 * have an integer result, and can be calculated right-to-left without
+ 	 * dealing with real numbers are extremely large factorials.
+ 	 * 
+ 	 * Furthermore,
+ 	 * 
+ 	 * n choose k == n choose (n - k), so the equation can be minimized such
+ 	 * that there will never be more than n/2 factors to calculate.
+	 */
+	/** Calculates the number of possible subsets. */
+	@Override
+	public int size() {
+		
+		int n = backingSet.length;
+		int product = 1;
+		
+		// Reduce the problem to n choose (n - k) *if* it is smaller
+		int k = this.k > n ? this.k : n - this.k;
+		
+		for (int i = 1; i <= k; i++) {
+			// Doing the multiplication first explicitly will ensure only
+			// integer results are produced.
+			product *= n - (k - i);
+			product /= i;
+		}
+		
+		return product;
+	}
+	
+	
 	public static void main (String[] args) {
+		SizeKSubset<Integer> s = new SizeKSubset<Integer>(
+				new TreeSet<Integer>(Arrays.asList(
+						new Integer[] {0,1,2,3,4,5,6,7,8,9})), 3);
 		
-		// Generate iterator
-		SizeKSubset<Integer> s = new SizeKSubset<Integer>(new TreeSet<Integer>(Arrays.asList(new Integer[] {1,2,3,4,5})), 3);
-		Iterator<Set<Integer>> sit = s.iterator();
+		System.out.println("Size: " + s.size() + " sets.");
 		
-		while (sit.hasNext()) {
-			Set<Integer> out = sit.next();
-			System.out.println(out);
+		for (Set<Integer> subset : s) {
+			System.out.println(subset);
 		}
-		
-		/* Toms test
-		SizeKSubset<String> s = new SizeKSubset<String>(new TreeSet<String>(Arrays.asList( args )), 3 );
-		for (Set<String> x : s) {
-			System.out.println(x);
-		}
-		*/
 	}
 }
