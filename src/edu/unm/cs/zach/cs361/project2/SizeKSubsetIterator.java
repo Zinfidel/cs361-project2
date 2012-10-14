@@ -28,10 +28,13 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 	private int n;
 
 	/** Array of indexes representing the current size-k combination. */
-	private int[] combination = null;
+	private int[] combination;
 
 	/** Tracks the index being currently examined in the combination array. */
 	private int curIndex;
+	
+	/** Flag is true while there are still more combinations to generate. */
+	private boolean hasNextCombination = true;
 	
 	/** Iterator variable. Declared as field to keep instantiation out of
 	 *  tight loops that might arise from rapidly calling the next() method. */
@@ -46,53 +49,58 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 		backingSet = subset.getBackingSet();
 		k = subset.getK();
 		n = backingSet.length;
+		combination = new int[k];
+
+		/*
+		 * Generate combination array initially such that last index is
+		 * one less than it should be (combination[k-1] == combination[k-2])
+		 * so that next() correctly produces the first combination the
+		 * first time it is run.
+		 */
+		for (i = 0; i < k; i++) { combination[i] = i; }
+		combination[k-1]--;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public boolean hasNext() {
-		// Returns true if the iteration has more elements.
-		// TODO: implement this.
-		return true;
+		return hasNextCombination;
 	}
 
 	/** {@inheritDoc} */
-	// NOTE: Study: http://msdn.microsoft.com/en-us/library/aa289166.aspx
 	@Override
 	public Set<E> next() {
 		
-		i = 0; // Reset iterator
 		curIndex = k - 1; // Current item index being evaluated for advancement
 		
-		// If it initial combination (0...k-1) doesn't exist, generate it.
-		if (combination == null) {
-			combination = new int[k];
-			for (i = 0; i < k; i++) { combination[i] = i; }
+		// If the last index is less than n-1, increment it.
+		if (combination[k-1] < n-1) {
+			combination[k-1]++;
 		}
 		
-		// Otherwise produce next combination
+		// Otherwise move backward to find an index to increase
 		else {
+			
 			/*
 			 * If the current index is the index of the last item in the set,
 			 * move curIndex 'back' until we get to an index that is not in
 			 * descending order (is less than what it would be in order). This
 			 * will move curIndex to the index that needs to be incremented.
 			 */
-			while (combination[curIndex--] == n - ++i);
-			
-			// If curIndex is -1, then the last combination has been found.
-			if (curIndex == -1) { }
+			i = 1;
+			while (combination[curIndex] == n - i++) { curIndex--; }
 			
 			/*
-			 * Otherwise, generate an increasing range at the current index
-			 * starting with the value of the current index + 1 and increasing
-			 * until the end of the index array is reached.
+			 * Generate an increasing range at the current index starting with
+			 * the value of the current index + 1 and increasing until the end
+			 * of the index array is reached.
 			 */
-			else {
-				for (i = 0; curIndex + i < k-1; i++) {
-					combination[curIndex + i] = combination[curIndex] + i;
-				}
+			for (i = combination[curIndex] + 1; curIndex < k; i++) {
+				combination[curIndex++] = i;
 			}
+			
+			// If this is the last combination, set the flag
+			if (combination[0] == n - k) { hasNextCombination = false; }
 		}
 		
 		// Convert the combination array to a set and return it
