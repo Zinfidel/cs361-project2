@@ -18,8 +18,11 @@ import java.util.TreeSet;
  */
 public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 
-	/** Non-mutable set that Subset object will reference. */
-	private Set<E> backingSet;  
+	/**
+	 * Backing set as an array. Converted into array form so that objects in
+	 * the set are indexable, as the set interface does not guarantee order.
+	 */
+	private E[] backingSet;  
 
 	/** Size of subsets to produce. */
 	private int k;
@@ -27,11 +30,12 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 	
 	/**
 	 * Constructor
-	 * @param backingSet Non-mutable set to reference.
+	 * @param backingSet Array version of supplied backing set.
 	 * @param k Size of subsets.
 	 */
+	@SuppressWarnings("unchecked")
 	public SizeKSubset (Set<E> backingSet, int k) {
-		this.backingSet = backingSet;
+		this.backingSet = (E[])backingSet.toArray(); // unchecked type
 		this.k = k;
 	}
 	
@@ -52,7 +56,7 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 
 	
 	/** Returns the backing set of this object. */
-	public Set<E> getBackingSet() {
+	public E[] getBackingSet() {
 		return backingSet;
 	}
 	
@@ -64,10 +68,17 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 	
 	
 	public static void main (String[] args) {
-		// TODO: add your own tests.
+		
+		// Generate iterator
+		SizeKSubset<Integer> s = new SizeKSubset<Integer>(new TreeSet<Integer>(Arrays.asList(new Integer[] {1,2,3,4,5})), 3);
+		Iterator<Set<Integer>> sit = s.iterator();
+		sit.next();
+		
+		/* Toms test
 		SizeKSubset<String> s = new SizeKSubset<String>(new TreeSet<String>(Arrays.asList( args )), 3 );
 		for (Set<String> x : s) {
 			System.out.println(x);
 		}
+		*/
 	}
 }

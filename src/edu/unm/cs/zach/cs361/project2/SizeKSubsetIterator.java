@@ -1,5 +1,6 @@
 package edu.unm.cs.zach.cs361.project2;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,20 +19,25 @@ import java.util.TreeSet;
  */
 public class SizeKSubsetIterator<E> implements Iterator<Set<E>> { 
 
-	/** The backing set to be iterated over. */
-	private Set<E> backingSet;
+	/** The backing set (array) to be iterated over. */
+	private E[] backingSet;
 	
 	/** The size of the subsets to produce. */
 	private int k;
+	
+	/** Array of indexes representing the current size-k combination. */
+	private int[] combination = null;
 
 	
 	/**
 	 * Construct a new iterator for a SizeKSubset
-	 * @param subset The SizeKSubset this iterator is assocaited with.
+	 * @param subset The SizeKSubset this iterator is associated with.
 	 */
-	public SizeKSubsetIterator ( SizeKSubset<E> subset ) {
+	public SizeKSubsetIterator(SizeKSubset<E> subset) {
 		backingSet = subset.getBackingSet();
 		k = subset.getK();
+		
+		
 	}
 
 	
@@ -45,9 +51,25 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 
 	
 	/** {@inheritDoc} */
+	// NOTE: Study: http://msdn.microsoft.com/en-us/library/aa289166.aspx
 	@Override
 	public Set<E> next() {
-		// NOTE: Study: http://msdn.microsoft.com/en-us/library/aa289166.aspx
+		
+		// Points toward current item index being evaluated for advancement
+		int curIndex = k - 1;
+		
+		// If it initial combination (0...k-1) doesn't exist, generate it.
+		if (combination == null) {
+			combination = new int[k];
+			for (int i = 0; i < k; i++) { combination[i] = i; }
+		}
+		
+		// Otherwise produce next combination
+		else {
+			// If current index is last item index, set to 0, move to prior index
+			while (curIndex == 1) {}
+				// TODO: Need to make sure we don't repeat indexes too!!
+		}
 		
 		// Returns the next element in the iteration.
 		// This will always be a size-k subset of the Set<E>
