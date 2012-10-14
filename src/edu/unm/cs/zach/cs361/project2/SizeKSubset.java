@@ -91,7 +91,7 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 		int product = 1;
 		
 		// Reduce the problem to n choose (n - k) *if* it is smaller
-		int k = this.k > n ? n - this.k : this.k;
+		int k = this.k > n/2 ? n - this.k : this.k;
 		
 		for (int i = 1; i <= k; i++) {
 			// Doing the multiplication first explicitly will ensure only
