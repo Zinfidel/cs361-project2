@@ -72,7 +72,11 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 		// Generate iterator
 		SizeKSubset<Integer> s = new SizeKSubset<Integer>(new TreeSet<Integer>(Arrays.asList(new Integer[] {1,2,3,4,5})), 3);
 		Iterator<Set<Integer>> sit = s.iterator();
-		sit.next();
+		
+		for (int j = 0; j < 5; j++) {
+			Set<Integer> out = sit.next();
+			System.out.println(out);
+		}
 		
 		/* Toms test
 		SizeKSubset<String> s = new SizeKSubset<String>(new TreeSet<String>(Arrays.asList( args )), 3 );
