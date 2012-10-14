@@ -78,8 +78,10 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
  	 * 
  	 * Furthermore,
  	 * 
- 	 * n choose k == n choose (n - k), so the equation can be minimized such
- 	 * that there will never be more than n/2 factors to calculate.
+ 	 * n choose k == n choose (n - k)
+ 	 * 
+ 	 * so the equation can be minimized such that there will never be more
+ 	 * than n/2 factors to calculate.
 	 */
 	/** Calculates the number of possible subsets. */
 	@Override
