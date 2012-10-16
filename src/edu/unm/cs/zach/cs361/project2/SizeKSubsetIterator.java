@@ -63,6 +63,45 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 	}
 	
 
+	/*
+	 * The basic idea behind this algorithm is shown via a bad ASCII table\
+	 * below for size n = 8 and subset size k = 4:
+	 * 
+	 *                  Backing Set                            Combination
+	 * ------------------------------------------------------------------------
+	 * Starting:
+	 *           [ A, B, C, D, E, F, G, H ]                   [ 0, 1, 2, 3 ]
+	 *             ^  ^  ^  ^
+	 *
+	 * Step:
+	 *           [ A, B, C, D, E, F, G, H ]                   [ 0, 1, 2, 4 ]
+	 *             ^  ^  ^     ^                                         +
+	 *               
+	 * Last index is last item after several steps:
+	 *           [ A, B, C, D, E, F, G, H ]                   [ 0, 1, 2, 7 ]
+	 *             ^  ^  ^              ^                             ^--<
+	 *               
+	 * Produce a range in combination to find the next subset
+	 *           [ A, B, C, D, E, F, G, H ]                   [ 0, 1, 3, 4 ]
+	 *             ^  ^     ^  ^                 range(2+1...)--------^-->
+	 *
+	 * Last index reached at a much later combination:
+	 *           [ A, B, C, D, E, F, G, H ]                   [ 0, 5, 6, 7 ]
+	 *             ^              ^  ^  ^                       ^--<--<--<
+	 *             
+	 * Subsequent range produced:
+	 *           [ A, B, C, D, E, F, G, H ]                   [ 1, 2, 3, 4 ]
+	 *                ^  ^  ^  ^                 range(0+1...)--^-->-->-->          
+	 * ------------------------------------------------------------------------
+	 * 
+	 * Note that the algorithm determines how far back in the combination array
+	 * to start the range by counting down from the right-most (last item)
+	 * index to the left. For instance, if 7 is produced in the last index, and
+	 * the algorithm moves left and finds 6, it will continue to move left as
+	 * 6 is the next item in the descending range. It will do this until it
+	 * finds an index that is not in order (more than 1 less than to the right)
+	 * and then produce the increasing range from there.
+	 */
 	/** {@inheritDoc} */
 	@Override
 	public Set<E> next() {

@@ -46,6 +46,7 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 		return new SizeKSubsetIterator<E>(this);
 	}
 
+	
 	/** Returns the backing set of this object. */
 	public E[] getBackingSet() {
 		return backingSet;
@@ -74,7 +75,7 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
  	 * 
  	 * Each term in the equation is itself a coefficient, and so they each
  	 * have an integer result, and can be calculated right-to-left without
- 	 * dealing with real numbers are extremely large factorials.
+ 	 * dealing with real numbers or extremely large factorials.
  	 * 
  	 * Furthermore,
  	 * 
