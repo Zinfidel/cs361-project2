@@ -52,19 +52,24 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 		n = backingSet.length;
 		combination = new int[k];
 
-		/*
-		 * Generate combination array initially such that last index is
-		 * one less than it should be (combination[k-1] == combination[k-2])
-		 * so that next() correctly produces the first combination the
-		 * first time it is run.
-		 */
-		for (i = 0; i < k; i++) { combination[i] = i; }
-		combination[k-1]--;
+		// Edge case of k = 0
+		if (k == 0) {
+			hasNextCombination = false;
+		} else {
+			/*
+			 * Generate combination array initially such that last index is
+			 * one less than it should be (combination[k-1] == combination[k-2])
+			 * so that next() correctly produces the first combination the
+			 * first time it is run.
+			 */
+			for (i = 0; i < k; i++) { combination[i] = i; }
+			combination[k-1]--;
+		}
 	}
 	
 
 	/*
-	 * The basic idea behind this algorithm is shown via a bad ASCII table\
+	 * The basic idea behind this algorithm is shown via a bad ASCII table
 	 * below for size n = 8 and subset size k = 4:
 	 * 
 	 *                  Backing Set                            Combination
