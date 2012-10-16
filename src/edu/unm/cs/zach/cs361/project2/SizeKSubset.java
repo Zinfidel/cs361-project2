@@ -105,18 +105,40 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 	}
 	
 	
+	// Tests
 	public static void main (String[] args) {
-		/*SizeKSubset<Integer> s = new SizeKSubset<Integer>(
+		// n = 10, k = 3
+		SizeKSubset<Integer> s = new SizeKSubset<Integer>(
 				new TreeSet<Integer>(Arrays.asList(
-						new Integer[] {0,1,2,3,4,5,6,7,8,9})), 3);*/
+						new Integer[] {0,1,2,3,4,5,6,7,8,9})), 5);
+		
+		/* n = 0
 		SizeKSubset<Integer> s = new SizeKSubset<Integer>(
 				new TreeSet<Integer>(Arrays.asList(
 						new Integer[] {})), 3);
+		*/
 		
-		System.out.println("Size: " + s.size() + " sets.");
+		/* k = 0
+		SizeKSubset<Integer> s = new SizeKSubset<Integer>(
+				new TreeSet<Integer>(Arrays.asList(
+						new Integer[] {0,1,2,3,4,5,6,7,8,9})), 0);
+		*/
 		
+		// Print the number of subsets
+		System.out.print("Size: " + s.size() + " set");
+		System.out.println(s.size() <= 1 ? "." : "s.");
+		System.out.println();
+		
+		// Print the subsets in 5 columns
+		int column = 0;
 		for (Set<Integer> subset : s) {
-			System.out.println(subset);
+			System.out.print(subset);
+			if (++column > 4) {
+				System.out.println();
+				column = 0;
+			} else {
+				System.out.print(" ");
+			}
 		}
 	}
 }
