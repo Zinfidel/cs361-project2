@@ -52,8 +52,8 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 		n = backingSet.length;
 		combination = new int[k];
 
-		// Edge case of k = 0 or n = 0
-		if (k == 0 || n == 0) {
+		// Edge case of k = 0, n = 0, or k > n
+		if (k == 0 || n == 0 || k > n) {
 			hasNextCombination = false;
 		} else {
 			/*
@@ -140,10 +140,10 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 			for (i = combination[curIndex] + 1; curIndex < k; i++) {
 				combination[curIndex++] = i;
 			}
-			
-			// If this is the last combination, set the flag
-			if (combination[0] == n - k) { hasNextCombination = false; }
 		}
+		
+		// If this is the last combination, set the flag
+		if (combination[0] == n - k) { hasNextCombination = false; }
 		
 		// Convert the combination array to a set and return it
 		TreeSet<E> subset = new TreeSet<E>();

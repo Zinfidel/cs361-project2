@@ -91,6 +91,9 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 		int n = backingSet.length;
 		int product = 1;
 		
+		// Edge case
+		if (k > n) return 0;
+		
 		// Reduce the problem to n choose (n - k) *if* it is smaller
 		int k = this.k > n/2 ? n - this.k : this.k;
 		
@@ -107,7 +110,7 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 	
 	// Tests
 	public static void main (String[] args) {
-		// n = 10, k = 3
+		// n = 10, k = 5
 		SizeKSubset<Integer> s = new SizeKSubset<Integer>(
 				new TreeSet<Integer>(Arrays.asList(
 						new Integer[] {0,1,2,3,4,5,6,7,8,9})), 5);
@@ -126,7 +129,7 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 		
 		// Print the number of subsets
 		System.out.print("Size: " + s.size() + " set");
-		System.out.println(s.size() <= 1 ? "." : "s.");
+		System.out.println(s.size() == 1 ? "." : "s.");
 		System.out.println();
 		
 		// Print the subsets in 5 columns
