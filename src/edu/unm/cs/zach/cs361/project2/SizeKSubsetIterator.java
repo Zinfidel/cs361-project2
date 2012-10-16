@@ -52,8 +52,8 @@ public class SizeKSubsetIterator<E> implements Iterator<Set<E>> {
 		n = backingSet.length;
 		combination = new int[k];
 
-		// Edge case of k = 0
-		if (k == 0) {
+		// Edge case of k = 0 or n = 0
+		if (k == 0 || n == 0) {
 			hasNextCombination = false;
 		} else {
 			/*

@@ -106,9 +106,12 @@ public class SizeKSubset<E> extends AbstractSet<Set<E>> {
 	
 	
 	public static void main (String[] args) {
+		/*SizeKSubset<Integer> s = new SizeKSubset<Integer>(
+				new TreeSet<Integer>(Arrays.asList(
+						new Integer[] {0,1,2,3,4,5,6,7,8,9})), 3);*/
 		SizeKSubset<Integer> s = new SizeKSubset<Integer>(
 				new TreeSet<Integer>(Arrays.asList(
-						new Integer[] {0,1,2,3,4,5,6,7,8,9})), 0);
+						new Integer[] {})), 3);
 		
 		System.out.println("Size: " + s.size() + " sets.");
 		
